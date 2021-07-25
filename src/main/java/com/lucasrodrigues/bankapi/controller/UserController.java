@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.lucasrodrigues.bankapi.exception.UserNotFoundException;
 import com.lucasrodrigues.bankapi.model.User;
 import com.lucasrodrigues.bankapi.repository.UserRepository;
 
@@ -54,15 +55,15 @@ public class UserController {
 
 	@PutMapping("/{id}")
 	@Transactional
-	public ResponseEntity<?> updateUser(@Valid @RequestBody User user){
-		verifyIfExists(user.getId());
-		userRepository.save(user);
-		return new ResponseEntity<>(HttpStatus.OK);
+	public ResponseEntity<?> updateUser(@Valid @RequestBody User user, @PathVariable Long id){
+		verifyIfExists(id);
+		user.setId(id);
+		return new ResponseEntity<>(userRepository.save(user), HttpStatus.OK);
 	}
 	
 	public void verifyIfExists(Long id) {
 		if (!userRepository.findById(id).isPresent()) {
-			throw new RuntimeException("User not found with ID " + id + "!");
+			throw new UserNotFoundException("User not found with ID " + id + "!");
 		}
 	}
 }
