@@ -1,10 +1,10 @@
 package com.lucasrodrigues.bankapi.utils;
 
-public class ErrorDetail {
+public class ErrorDetails {
 
 	private String error;
 
-	public ErrorDetail(String error) {
+	public ErrorDetails(String error) {
 		this.error = error;
 	}
 

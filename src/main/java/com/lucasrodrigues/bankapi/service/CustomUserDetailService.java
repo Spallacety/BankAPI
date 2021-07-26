@@ -1,0 +1,35 @@
+package com.lucasrodrigues.bankapi.service;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Component;
+
+import com.lucasrodrigues.bankapi.exception.UserNotFoundException;
+import com.lucasrodrigues.bankapi.model.User;
+import com.lucasrodrigues.bankapi.repository.UserRepository;
+
+@Component
+public class CustomUserDetailService implements UserDetailsService{
+
+	private final UserRepository userRepository;
+	
+	@Autowired
+	public CustomUserDetailService(UserRepository userRepository) {
+		this.userRepository = userRepository;
+	}
+	
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		User user = Optional.ofNullable(userRepository.getByEmail(username)).orElseThrow(()->new UserNotFoundException());
+		List<GrantedAuthority> authorityListUser = AuthorityUtils.createAuthorityList("ROLE_USER");
+		return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), authorityListUser);	
+	}
+
+}

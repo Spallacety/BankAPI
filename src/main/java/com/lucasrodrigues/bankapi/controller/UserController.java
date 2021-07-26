@@ -4,6 +4,7 @@ import javax.validation.Valid;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -42,6 +43,7 @@ public class UserController {
 	@PostMapping()
 	@Transactional
 	public ResponseEntity<?> saveUser(@Valid @RequestBody User user) {
+		user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
 		return new ResponseEntity<>(userRepository.save(user), HttpStatus.OK);
 	}
 

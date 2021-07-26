@@ -1,10 +1,10 @@
 package com.lucasrodrigues.bankapi.utils;
 
-public class MessageDetail {
+public class MessageDetails {
 
 	private String message;
 
-	public MessageDetail(String message) {
+	public MessageDetails(String message) {
 		this.message = message;
 	}
 
