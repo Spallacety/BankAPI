@@ -63,7 +63,8 @@ public class UserController {
 	
 	public void verifyIfExists(Long id) {
 		if (!userRepository.findById(id).isPresent()) {
-			throw new UserNotFoundException("User not found with ID " + id + "!");
+			throw new UserNotFoundException();
 		}
 	}
+	
 }

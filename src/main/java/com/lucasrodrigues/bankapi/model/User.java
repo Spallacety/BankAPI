@@ -19,7 +19,7 @@ public class User{
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
-	@NotEmpty
+	@NotEmpty(message = "Name is mandatory")
     private String name;
 	
 	@NotEmpty
@@ -44,7 +44,6 @@ public class User{
     }
     
     public User() {
-    	
     }
     
 	@Override
