@@ -16,10 +16,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	
 	@Autowired
 	private CustomUserDetailService customUserDetailService;
-
+	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.cors().and().csrf().disable().authorizeRequests().antMatchers("/users").permitAll().anyRequest().authenticated().and().addFilter(new JWTAuthenticationFilter(authenticationManager())).addFilter(new JWTAuthorizationFilter(authenticationManager(), customUserDetailService)).formLogin().loginPage("/auth").loginProcessingUrl("/auth").permitAll();
+		JWTAuthenticationFilter jwtAuthenticationFilter = new JWTAuthenticationFilter(authenticationManager());
+		jwtAuthenticationFilter.setFilterProcessesUrl("/auth");
+		
+		http.cors().and().csrf().disable().authorizeRequests().antMatchers("/users").permitAll().and().authorizeRequests().antMatchers("/*").permitAll().anyRequest().authenticated().and().addFilter(jwtAuthenticationFilter).addFilter(new JWTAuthorizationFilter(authenticationManager(), customUserDetailService));
 	}
 	
 	@Override
