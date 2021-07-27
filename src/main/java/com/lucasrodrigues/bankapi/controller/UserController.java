@@ -6,19 +6,18 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.lucasrodrigues.bankapi.exception.AlreadyRegisteredEmailException;
 import com.lucasrodrigues.bankapi.exception.UserNotFoundException;
 import com.lucasrodrigues.bankapi.model.User;
 import com.lucasrodrigues.bankapi.repository.UserRepository;
-import com.lucasrodrigues.bankapi.utils.MessageDetails;
+import com.lucasrodrigues.bankapi.utils.UserDetails;
 
 @RestController
 @RequestMapping("/users")
@@ -44,32 +43,33 @@ public class UserController {
 	@PostMapping
 	@Transactional
 	public ResponseEntity<?> saveUser(@Valid @RequestBody User user) {
+		if (userRepository.getByEmail(user.getEmail()) != null) {
+			throw new AlreadyRegisteredEmailException();
+		}
 		user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
 		userRepository.save(user);
-		user.setPassword(null);
-		user.setId(null);
-		return new ResponseEntity<>(user, HttpStatus.OK);
+		return new ResponseEntity<>(new UserDetails(user.getName(), user.getEmail()), HttpStatus.OK);
 	}
 
-	@DeleteMapping("/{id}")
-	@Transactional
-	public ResponseEntity<?> deleteUser(@PathVariable Long id) {
-		verifyIfExists(id);
-		userRepository.deleteById(id);
-		return new ResponseEntity<>(new MessageDetails("user deleted"), HttpStatus.OK);
-	}
-	
-	@PutMapping("/{id}")
-	@Transactional
-	public ResponseEntity<?> updateUser(@Valid @RequestBody User user, @PathVariable Long id){
-		verifyIfExists(id);
-		user.setId(id);
-		user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
-		userRepository.save(user);
-		user.setPassword(null);
-		user.setId(null);
-		return new ResponseEntity<>(user, HttpStatus.OK);
-	}
+//	@DeleteMapping("/{id}")
+//	@Transactional
+//	public ResponseEntity<?> deleteUser(@PathVariable Long id) {
+//		verifyIfExists(id);
+//		userRepository.deleteById(id);
+//		return new ResponseEntity<>(new MessageDetails("user deleted"), HttpStatus.OK);
+//	}
+//	
+//	@PutMapping("/{id}")
+//	@Transactional
+//	public ResponseEntity<?> updateUser(@Valid @RequestBody User user, @PathVariable Long id){
+//		verifyIfExists(id);
+//		user.setId(id);
+//		user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
+//		userRepository.save(user);
+//		user.setPassword(null);
+//		user.setId(null);
+//		return new ResponseEntity<>(user, HttpStatus.OK);
+//	}
 	
 	public void verifyIfExists(Long id) {
 		if (!userRepository.findById(id).isPresent()) {

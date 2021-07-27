@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name="users")
@@ -19,28 +20,29 @@ public class User{
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
-	@NotEmpty(message = "Name is mandatory")
-    private String name;
-	
 	@NotEmpty
 	@Email
 	@Column(unique = true)
     private String email;
 	
 	@NotEmpty
+	@Size(min = 6)
     private String password;
+	
+	@NotEmpty
+	private String name;
 
-    public User(Long id, String name, String email, String password) {
+    public User(Long id, String email, String password, String name) {
     	this.id = id;
-    	this.name = name;
     	this.email = email;
     	this.password = password;
+    	this.name = name;
     }
     
-    public User(String name, String email, String password) {
-    	this.name = name;
+    public User(String email, String password, String name) {
     	this.email = email;
     	this.password = password;
+    	this.name = name;
     }
     
     public User() {
@@ -72,16 +74,7 @@ public class User{
 		this.id = id;
 	}
 	
-    
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getEmail() {
+    public String getEmail() {
 		return email;
 	}
 
@@ -95,6 +88,14 @@ public class User{
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+	
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
     
 }
