@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.lucasrodrigues.bankapi.exception.UserNotFoundException;
 import com.lucasrodrigues.bankapi.model.User;
 import com.lucasrodrigues.bankapi.repository.UserRepository;
+import com.lucasrodrigues.bankapi.utils.MessageDetails;
 
 @RestController
 @RequestMapping("/users")
@@ -29,7 +30,7 @@ public class UserController {
 		this.userRepository = userRepository;
 	}
 	
-	@GetMapping()
+	@GetMapping
 	public ResponseEntity<?> getAllUsers() {
 		return new ResponseEntity<>(userRepository.findAll(), HttpStatus.OK);
 	}
@@ -40,11 +41,14 @@ public class UserController {
 		return new ResponseEntity<>(userRepository.findById(id).get(), HttpStatus.OK);
 	}
 
-	@PostMapping()
+	@PostMapping
 	@Transactional
 	public ResponseEntity<?> saveUser(@Valid @RequestBody User user) {
 		user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
-		return new ResponseEntity<>(userRepository.save(user), HttpStatus.OK);
+		userRepository.save(user);
+		user.setPassword(null);
+		user.setId(null);
+		return new ResponseEntity<>(user, HttpStatus.OK);
 	}
 
 	@DeleteMapping("/{id}")
@@ -52,15 +56,19 @@ public class UserController {
 	public ResponseEntity<?> deleteUser(@PathVariable Long id) {
 		verifyIfExists(id);
 		userRepository.deleteById(id);
-		return new ResponseEntity<>(HttpStatus.OK);
+		return new ResponseEntity<>(new MessageDetails("user deleted"), HttpStatus.OK);
 	}
-
+	
 	@PutMapping("/{id}")
 	@Transactional
 	public ResponseEntity<?> updateUser(@Valid @RequestBody User user, @PathVariable Long id){
 		verifyIfExists(id);
 		user.setId(id);
-		return new ResponseEntity<>(userRepository.save(user), HttpStatus.OK);
+		user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
+		userRepository.save(user);
+		user.setPassword(null);
+		user.setId(null);
+		return new ResponseEntity<>(user, HttpStatus.OK);
 	}
 	
 	public void verifyIfExists(Long id) {
