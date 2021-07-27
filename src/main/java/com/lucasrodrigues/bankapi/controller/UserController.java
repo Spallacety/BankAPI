@@ -48,7 +48,7 @@ public class UserController {
 		}
 		user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
 		userRepository.save(user);
-		return new ResponseEntity<>(new UserDetails(user.getName(), user.getEmail()), HttpStatus.OK);
+		return new ResponseEntity<>(new UserDetails(user.getEmail(), user.getName()), HttpStatus.OK);
 	}
 
 //	@DeleteMapping("/{id}")

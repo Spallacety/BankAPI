@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 
+import com.lucasrodrigues.bankapi.exception.AlreadyRegisteredAccountNumberException;
 import com.lucasrodrigues.bankapi.exception.AlreadyRegisteredEmailException;
 import com.lucasrodrigues.bankapi.exception.UserNotFoundException;
 import com.lucasrodrigues.bankapi.utils.ErrorDetails;
@@ -45,12 +46,17 @@ public class RestExceptionHandler {
 	}
 	
 	@ExceptionHandler(UserNotFoundException.class)
-	public ResponseEntity<?> handleUserNotFoundException(UserNotFoundException userNotFoundException){
+	public ResponseEntity<?> handleUserNotFoundException(UserNotFoundException e){
 		return new ResponseEntity<>(new ErrorDetails("user not found"), HttpStatus.NOT_FOUND);
 	}
 	
 	@ExceptionHandler(AlreadyRegisteredEmailException.class)
-	public ResponseEntity<?> handleAlreadyRegisteredEmailException(AlreadyRegisteredEmailException alreadyRegisteredEmailException){
+	public ResponseEntity<?> handleAlreadyRegisteredEmailException(AlreadyRegisteredEmailException e){
 		return new ResponseEntity<>(new ErrorDetails("this email is already registered"), HttpStatus.UNPROCESSABLE_ENTITY);
+	}
+	
+	@ExceptionHandler(AlreadyRegisteredAccountNumberException.class)
+	public ResponseEntity<?> handleAlreadyRegisteredAccountNumberException(AlreadyRegisteredAccountNumberException e){
+		return new ResponseEntity<>(new ErrorDetails("this account number is already registered"), HttpStatus.UNPROCESSABLE_ENTITY);
 	}
 }
