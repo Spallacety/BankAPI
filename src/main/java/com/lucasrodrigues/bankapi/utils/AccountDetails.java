@@ -16,9 +16,11 @@ public class AccountDetails {
 	public String getNumber() {
 		return number;
 	}
+	
 	public double getBalance() {
 		return balance;
 	}
+	
 	public UserDetails getUser() {
 		return user;
 	}

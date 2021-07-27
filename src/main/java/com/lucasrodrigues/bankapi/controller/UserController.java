@@ -48,29 +48,9 @@ public class UserController {
 		}
 		user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
 		userRepository.save(user);
-		return new ResponseEntity<>(new UserDetails(user.getEmail(), user.getName()), HttpStatus.OK);
+		return new ResponseEntity<>(new UserDetails(user.getEmail(), user.getName()), HttpStatus.CREATED);
 	}
 
-//	@DeleteMapping("/{id}")
-//	@Transactional
-//	public ResponseEntity<?> deleteUser(@PathVariable Long id) {
-//		verifyIfExists(id);
-//		userRepository.deleteById(id);
-//		return new ResponseEntity<>(new MessageDetails("user deleted"), HttpStatus.OK);
-//	}
-//	
-//	@PutMapping("/{id}")
-//	@Transactional
-//	public ResponseEntity<?> updateUser(@Valid @RequestBody User user, @PathVariable Long id){
-//		verifyIfExists(id);
-//		user.setId(id);
-//		user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
-//		userRepository.save(user);
-//		user.setPassword(null);
-//		user.setId(null);
-//		return new ResponseEntity<>(user, HttpStatus.OK);
-//	}
-	
 	public void verifyIfExists(Long id) {
 		if (!userRepository.findById(id).isPresent()) {
 			throw new UserNotFoundException();

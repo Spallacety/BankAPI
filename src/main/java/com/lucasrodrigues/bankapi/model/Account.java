@@ -44,6 +44,14 @@ public class Account{
 	public Account() {
 	}
 	
+	public void addBalance(double amount) {
+		this.balance += amount;
+	}
+	
+	public void removeBalance(double amount) {
+		this.balance -= amount;
+	}
+	
 	public Long getId() {
 		return id;
 	}
