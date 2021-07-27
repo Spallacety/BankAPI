@@ -26,7 +26,7 @@ public class ExceptionHandlerFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
         }
         catch (JwtException e) {
-            response.setStatus(HttpStatus.BAD_REQUEST.value());
+            response.setStatus(HttpStatus.UNAUTHORIZED.value());
     		response.setContentType(MediaType.APPLICATION_JSON_VALUE);
             response.setCharacterEncoding(StandardCharsets.UTF_8.toString());
             response.getWriter().write(convertObjectToJson(new ErrorDetails("invalid token")));
@@ -34,7 +34,7 @@ public class ExceptionHandlerFilter extends OncePerRequestFilter {
         
 	}
 
-    private String convertObjectToJson(Object object) throws JsonProcessingException {
+    static String convertObjectToJson(Object object) throws JsonProcessingException {
         if (object == null) {
             return null;
         }

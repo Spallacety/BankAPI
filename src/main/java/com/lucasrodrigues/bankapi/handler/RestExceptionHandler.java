@@ -3,12 +3,12 @@ package com.lucasrodrigues.bankapi.handler;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 
-import com.lucasrodrigues.bankapi.exception.AccountNotFoundException;
 import com.lucasrodrigues.bankapi.exception.AlreadyRegisteredAccountNumberException;
 import com.lucasrodrigues.bankapi.exception.AlreadyRegisteredEmailException;
 import com.lucasrodrigues.bankapi.exception.DestinationAccountNotFoundException;
@@ -74,17 +74,12 @@ public class RestExceptionHandler {
 	
 	@ExceptionHandler(UserNotOwnerOfAccountException.class)
 	public ResponseEntity<?> handleUserNotOwnerOfAccountException(UserNotOwnerOfAccountException e){
-		return new ResponseEntity<>(new ErrorDetails("you're not the owner of this account"), HttpStatus.UNPROCESSABLE_ENTITY);
+		return new ResponseEntity<>(new ErrorDetails("you're not the owner of this account"), HttpStatus.UNAUTHORIZED);
 	}
 	
 	@ExceptionHandler(AlreadyRegisteredEmailException.class)
 	public ResponseEntity<?> handleAlreadyRegisteredEmailException(AlreadyRegisteredEmailException e){
 		return new ResponseEntity<>(new ErrorDetails("this email is already registered"), HttpStatus.UNPROCESSABLE_ENTITY);
-	}
-	
-	@ExceptionHandler(AccountNotFoundException.class)
-	public ResponseEntity<?> handleAccountNotFoundException(AccountNotFoundException e){
-		return new ResponseEntity<>(new ErrorDetails("account not found"), HttpStatus.NOT_FOUND);
 	}
 	
 	@ExceptionHandler(SourceAccountNotFoundException.class)
@@ -115,6 +110,11 @@ public class RestExceptionHandler {
 	@ExceptionHandler(SameAccountException.class)
 	public ResponseEntity<?> handleSameAccountException(SameAccountException e){
 		return new ResponseEntity<>(new ErrorDetails("source and destination accounts are the same"), HttpStatus.UNPROCESSABLE_ENTITY);
+	}
+	
+	@ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+	public ResponseEntity<?> handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException e){
+		return new ResponseEntity<>(new ErrorDetails("method not allowed"), HttpStatus.METHOD_NOT_ALLOWED);
 	}
 	
 }

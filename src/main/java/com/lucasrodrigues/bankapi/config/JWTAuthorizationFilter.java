@@ -13,17 +13,17 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
-import com.lucasrodrigues.bankapi.service.CustomUserDetailService;
+import com.lucasrodrigues.bankapi.service.UserDetailsService;
 
 import io.jsonwebtoken.Jwts;
 
 public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 
-	private final CustomUserDetailService customUserDetailService;
+	private final UserDetailsService userDetailsService;
 	
-	public JWTAuthorizationFilter(AuthenticationManager authenticationManager, CustomUserDetailService customUserDetailService) {
+	public JWTAuthorizationFilter(AuthenticationManager authenticationManager, UserDetailsService userDetailsService) {
 		super(authenticationManager);
-		this.customUserDetailService = customUserDetailService;
+		this.userDetailsService = userDetailsService;
 	}
 
 	@Override
@@ -43,7 +43,7 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 		String token = request.getHeader(SecurityConstants.HEADER_STRING);
 		if (token == null) return null;
 		String email = Jwts.parser().setSigningKey(SecurityConstants.SECRET).parseClaimsJws(token.replace(SecurityConstants.TOKEN_PREFIX, "")).getBody().getSubject();
-		UserDetails userDetails = customUserDetailService.loadUserByUsername(email);
+		UserDetails userDetails = userDetailsService.loadUserByUsername(email);
 		return email != null ? new UsernamePasswordAuthenticationToken(email, null, userDetails.getAuthorities()) : null;
 	}
 

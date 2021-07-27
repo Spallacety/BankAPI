@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
@@ -15,12 +14,12 @@ import com.lucasrodrigues.bankapi.model.User;
 import com.lucasrodrigues.bankapi.repository.UserRepository;
 
 @Component
-public class CustomUserDetailService implements UserDetailsService{
+public class UserDetailsService implements org.springframework.security.core.userdetails.UserDetailsService{
 
 	private final UserRepository userRepository;
 	
 	@Autowired
-	public CustomUserDetailService(UserRepository userRepository) {
+	public UserDetailsService(UserRepository userRepository) {
 		this.userRepository = userRepository;
 	}
 	
