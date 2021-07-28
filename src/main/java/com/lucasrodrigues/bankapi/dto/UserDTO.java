@@ -1,11 +1,11 @@
-package com.lucasrodrigues.bankapi.utils;
+package com.lucasrodrigues.bankapi.dto;
 
-public class UserDetails {
+public class UserDTO {
 	
 	private String email;
 	private String name;
 	
-	public UserDetails(String email, String name) {
+	public UserDTO(String email, String name) {
 		this.email = email;
 		this.name = name;
 	}

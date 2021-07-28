@@ -1,13 +1,13 @@
-package com.lucasrodrigues.bankapi.utils;
+package com.lucasrodrigues.bankapi.dto;
 
-public class TransferDetails {
+public class TransferDTO {
 	
 	private double amount;
 	private String source_account_number;
 	private String destination_account_number;
-	private UserDetails user_transfer;
+	private UserDTO user_transfer;
 	
-	public TransferDetails(double amount, String source_account_number, String destination_account_number,	UserDetails user_transfer) {
+	public TransferDTO(double amount, String source_account_number, String destination_account_number,	UserDTO user_transfer) {
 		this.amount = amount;
 		this.source_account_number = source_account_number;
 		this.destination_account_number = destination_account_number;
@@ -26,7 +26,7 @@ public class TransferDetails {
 		return destination_account_number;
 	}
 
-	public UserDetails getUser_transfer() {
+	public UserDTO getUser_transfer() {
 		return user_transfer;
 	}
 	

@@ -1,14 +1,14 @@
-package com.lucasrodrigues.bankapi.utils;
+package com.lucasrodrigues.bankapi.dto;
 
-public class ErrorDetails {
+public class ErrorDTO {
 
 	private String error;
 
-	public ErrorDetails(String error) {
+	public ErrorDTO(String error) {
 		this.error = error;
 	}
 
-	public ErrorDetails() {
+	public ErrorDTO() {
 	}
 	
 	public String getError() {

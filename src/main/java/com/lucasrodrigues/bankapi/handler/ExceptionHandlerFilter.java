@@ -14,7 +14,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.lucasrodrigues.bankapi.utils.ErrorDetails;
+import com.lucasrodrigues.bankapi.dto.ErrorDTO;
 
 import io.jsonwebtoken.JwtException;
 
@@ -29,7 +29,7 @@ public class ExceptionHandlerFilter extends OncePerRequestFilter {
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
     		response.setContentType(MediaType.APPLICATION_JSON_VALUE);
             response.setCharacterEncoding(StandardCharsets.UTF_8.toString());
-            response.getWriter().write(convertObjectToJson(new ErrorDetails("invalid token")));
+            response.getWriter().write(convertObjectToJson(new ErrorDTO("invalid token")));
         }
         
 	}

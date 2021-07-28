@@ -1,12 +1,12 @@
-package com.lucasrodrigues.bankapi.utils;
+package com.lucasrodrigues.bankapi.dto;
 
-public class AccountDetails {
+public class AccountDTO {
 	
 	private String number;
 	private double balance;
-	private UserDetails user;
+	private UserDTO user;
 	
-	public AccountDetails(String number, double balance, UserDetails user) {
+	public AccountDTO(String number, double balance, UserDTO user) {
 		super();
 		this.number = number;
 		this.balance = balance;
@@ -21,7 +21,7 @@ public class AccountDetails {
 		return balance;
 	}
 	
-	public UserDetails getUser() {
+	public UserDTO getUser() {
 		return user;
 	}
 	

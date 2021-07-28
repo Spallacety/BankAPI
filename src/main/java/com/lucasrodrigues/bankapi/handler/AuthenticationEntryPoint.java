@@ -10,7 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.lucasrodrigues.bankapi.utils.MessageDetails;
+import com.lucasrodrigues.bankapi.dto.MessageDTO;
 
 public class AuthenticationEntryPoint implements org.springframework.security.web.AuthenticationEntryPoint {
 
@@ -19,6 +19,6 @@ public class AuthenticationEntryPoint implements org.springframework.security.we
         response.setStatus(HttpStatus.UNAUTHORIZED.value());
 		response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setCharacterEncoding(StandardCharsets.UTF_8.toString());
-        response.getWriter().write(ExceptionHandlerFilter.convertObjectToJson(new MessageDetails("access denied")));
+        response.getWriter().write(ExceptionHandlerFilter.convertObjectToJson(new MessageDTO("access denied")));
 	}
 }
