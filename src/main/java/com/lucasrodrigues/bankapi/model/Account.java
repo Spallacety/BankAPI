@@ -6,6 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
@@ -24,6 +25,7 @@ public class Account{
     private String number;
 	
 	@NotNull
+	@Min(value = 0)
     private double balance;
 
 	public Account(Long id, String userEmail, String number, double balance) {

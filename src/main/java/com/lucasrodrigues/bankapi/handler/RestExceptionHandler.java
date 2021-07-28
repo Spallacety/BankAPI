@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 
 import com.lucasrodrigues.bankapi.dto.ErrorDTO;
+import com.lucasrodrigues.bankapi.exception.AccountNotFoundException;
 import com.lucasrodrigues.bankapi.exception.AlreadyRegisteredAccountNumberException;
 import com.lucasrodrigues.bankapi.exception.AlreadyRegisteredEmailException;
 import com.lucasrodrigues.bankapi.exception.DestinationAccountNotFoundException;
@@ -60,6 +61,12 @@ public class RestExceptionHandler {
 	        case "amount":
 	        	errorDTO.setError("amount must be greater than zero");
 	        	break;
+	        case "balance":
+	        	errorDTO.setError("balance must be greater than zero");
+	        	break;
+	        case "account_number":
+	        	errorDTO.setError("account number not found");
+	        	break;
 	        }
 	    }
 	    return new ResponseEntity<>(errorDTO, HttpStatus.UNPROCESSABLE_ENTITY);
@@ -108,6 +115,11 @@ public class RestExceptionHandler {
 	@ExceptionHandler(NegativeBalanceException.class)
 	public ResponseEntity<?> handleNegativeBalanceException(NegativeBalanceException e){
 		return new ResponseEntity<>(new ErrorDTO("balance can't be negative"), HttpStatus.UNPROCESSABLE_ENTITY);
+	}
+	
+	@ExceptionHandler(AccountNotFoundException.class)
+	public ResponseEntity<?> handleAccountNotFoundException(AccountNotFoundException e){
+		return new ResponseEntity<>(new ErrorDTO("account not found"), HttpStatus.NOT_FOUND);
 	}
 	
 	@ExceptionHandler(SameAccountException.class)

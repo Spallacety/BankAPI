@@ -30,8 +30,7 @@ public class ExceptionHandlerFilter extends OncePerRequestFilter {
     		response.setContentType(MediaType.APPLICATION_JSON_VALUE);
             response.setCharacterEncoding(StandardCharsets.UTF_8.toString());
             response.getWriter().write(convertObjectToJson(new ErrorDTO("invalid token")));
-        }
-        
+        }    
 	}
 
     static String convertObjectToJson(Object object) throws JsonProcessingException {
